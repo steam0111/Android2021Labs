@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1050888997170",
+    "firebase_url": "https://shareart-default-rtdb.firebaseio.com",
+    "project_id": "shareart",
+    "storage_bucket": "shareart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050888997170:android:ac9f98d88ce28726f86f2b",
+        "android_client_info": {
+          "package_name": "com.share.art"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1050888997170-e5svr608thg9jeunj9dqf570ka7jd2qe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt5ekMlnZ0u8HSMIXGOs8tFjFkxj2Fn2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1050888997170-e5svr608thg9jeunj9dqf570ka7jd2qe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
