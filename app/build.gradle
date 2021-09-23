@@ -1,3 +1,8 @@
+/**
+ * The first line in the build configuration applies the Android plugin for
+ * Gradle to this build and makes the android block available to specify
+ * Android-specific build options.
+ */
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -5,13 +10,18 @@ plugins {
 }
 
 android {
+    /**
+     * compileSdkVersion specifies the Android API level Gradle should use to
+     * compile your app. This means your app can use the API features included in
+     * this API level and lower.
+     */
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
 
     defaultConfig {
         applicationId "com.share.art"
         minSdkVersion 26
-        targetSdkVersion 30
+        targetSdkVersion 30 //Целевая версия приложения, если targetSdkVersion < версия установленная на телефоне
+        //система будет активировать совместимость
         versionCode 1
         versionName "1.0"
 

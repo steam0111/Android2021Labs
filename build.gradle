@@ -1,10 +1,14 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// В блоке buildscript настраиваются зависимости для самого gradle
 buildscript {
     ext.kotlin_version = "1.5.31"
+
+    // Настраивает репозитории, которые Gradle использует для поиска или загрузки зависимостей.
     repositories {
         google()
         jcenter()
     }
+
+    // Зависимости которые необходимы для билда проекта
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.2'
         classpath 'com.google.gms:google-services:4.3.10'
@@ -12,6 +16,7 @@ buildscript {
     }
 }
 
+// Репозитории которые используется всеми модулями для загузки зависимостей
 allprojects {
     repositories {
         google()

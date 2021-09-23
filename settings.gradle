@@ -1,2 +1,3 @@
+//Говорит какие модули должны быть включены при построение приложения
 include ':app', ':helpers'
 rootProject.name = "ShareArt"
