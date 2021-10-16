@@ -3,7 +3,7 @@ package com.share.art
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.ar.core.codelab.cloudanchor.helpers.FullScreenHelper
-import com.share.art.ar.CloudAnchorFragment
+import com.share.art.ar.presentation.CloudAnchorFragment
 
 class MainActivity : AppCompatActivity(R.layout.main_activity) {
 

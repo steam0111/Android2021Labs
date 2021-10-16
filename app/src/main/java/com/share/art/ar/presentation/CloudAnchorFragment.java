@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.share.art.ar;
+package com.share.art.ar.presentation;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -31,6 +31,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Anchor.CloudAnchorState;
@@ -50,7 +51,6 @@ import com.google.ar.core.TrackingState;
 import com.google.ar.core.codelab.cloudanchor.helpers.CameraPermissionHelper;
 import com.google.ar.core.codelab.cloudanchor.helpers.CloudAnchorManager;
 import com.google.ar.core.codelab.cloudanchor.helpers.DisplayRotationHelper;
-import com.google.ar.core.codelab.cloudanchor.helpers.FirebaseManager;
 import com.google.ar.core.codelab.cloudanchor.helpers.ResolveDialogFragment;
 import com.google.ar.core.codelab.cloudanchor.helpers.SnackbarHelper;
 import com.google.ar.core.codelab.cloudanchor.helpers.TapHelper;
@@ -93,7 +93,8 @@ public class CloudAnchorFragment extends Fragment implements GLSurfaceView.Rende
     private DisplayRotationHelper displayRotationHelper;
     private TrackingStateHelper trackingStateHelper;
     private TapHelper tapHelper;
-    private FirebaseManager firebaseManager;
+
+    private CloudAnchorViewModel cloudAnchorViewModel;
 
     private final BackgroundRenderer backgroundRenderer = new BackgroundRenderer();
     private final ObjectRenderer virtualObject = new ObjectRenderer();
@@ -112,11 +113,17 @@ public class CloudAnchorFragment extends Fragment implements GLSurfaceView.Rende
     private Button resolveButton;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        cloudAnchorViewModel = new ViewModelProvider(this).get(CloudAnchorViewModel.class);
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         tapHelper = new TapHelper(context);
         trackingStateHelper = new TrackingStateHelper(requireActivity());
-        firebaseManager = new FirebaseManager(context);
     }
 
     @Override
@@ -416,9 +423,9 @@ public class CloudAnchorFragment extends Fragment implements GLSurfaceView.Rende
         CloudAnchorState cloudState = anchor.getCloudAnchorState();
         if (cloudState == CloudAnchorState.SUCCESS) {
             String cloudAnchorId = anchor.getCloudAnchorId();
-            firebaseManager.nextShortCode(shortCode -> {
+
+            cloudAnchorViewModel.storeCloudAnchor(cloudAnchorId, shortCode -> {
                 if (shortCode != null) {
-                    firebaseManager.storeUsingShortCode(shortCode, cloudAnchorId);
                     messageSnackbarHelper.showMessage(getActivity(), "Cloud Anchor Hosted. Short code: " + shortCode);
                 } else {
                     // Firebase could not provide a short code.
@@ -426,6 +433,7 @@ public class CloudAnchorFragment extends Fragment implements GLSurfaceView.Rende
                             + "get a short code from Firebase.");
                 }
             });
+
             currentAnchor = anchor;
         } else {
             messageSnackbarHelper.showMessage(getActivity(), "Error while hosting: " + cloudState.toString());
@@ -439,7 +447,7 @@ public class CloudAnchorFragment extends Fragment implements GLSurfaceView.Rende
     }
 
     private synchronized void onShortCodeEntered(int shortCode) {
-        firebaseManager.getCloudAnchorId(shortCode, cloudAnchorId -> {
+        cloudAnchorViewModel.getCloudAnchorId(shortCode, cloudAnchorId -> {
             if (cloudAnchorId == null || cloudAnchorId.isEmpty()) {
                 messageSnackbarHelper.showMessage(
                         getActivity(),
@@ -455,7 +463,6 @@ public class CloudAnchorFragment extends Fragment implements GLSurfaceView.Rende
     }
 
     private synchronized void onResolvedAnchorAvailable(Anchor anchor, int shortCode) {
-        Log.d("qwerty", "onResolvedAnchorAvailable");
         CloudAnchorState cloudState = anchor.getCloudAnchorState();
         if (cloudState == CloudAnchorState.SUCCESS) {
             messageSnackbarHelper.showMessage(getActivity(), "Cloud Anchor Resolved. Short code: " + shortCode);
